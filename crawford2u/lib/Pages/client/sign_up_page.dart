@@ -1,21 +1,22 @@
-import 'dart:io';
 
-import 'package:crawford2u/Pages/login_page.dart';
+import 'dart:convert';
+import 'package:crawford2u/Pages/client/login_page.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignUpClientPage extends StatefulWidget {
+  const SignUpClientPage({Key? key}) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpClientPage> createState() => _SignUpCLientPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpCLientPageState extends State<SignUpClientPage> {
   final _formfield = GlobalKey<FormState>();
   final firstNameController =TextEditingController();
   final middleNameController= TextEditingController();
-  final lastNamaController=TextEditingController();
-  final phoneNumberController=TextEditingController();
+  final lastNameController=TextEditingController();
+  final clientPhoneNumberController=TextEditingController();
   final whatsAppNumberController=TextEditingController();
   final alternativeNumberController=TextEditingController();
   final emailAddressConttroller=TextEditingController();
@@ -24,14 +25,75 @@ class _SignUpPageState extends State<SignUpPage> {
   final panNumberController=TextEditingController();
   final buildingNameController=TextEditingController();
   final flatNumberController=TextEditingController();
-  final streetNameControll=TextEditingController();
+  final streetNameController=TextEditingController();
   final pinCodeController=TextEditingController();
   bool passToggle= true;
 
+
+FocusNode firstNameFiled=FocusNode();
+  FocusNode middleNameFiled=FocusNode();
+  FocusNode lastNameFiled=FocusNode();
+  FocusNode phoneFiled=FocusNode();
+  FocusNode whatsappNoFiled=FocusNode();
+  FocusNode alternativeNoFiled=FocusNode();
+  FocusNode emailFiled=FocusNode();
+  FocusNode passwordFiled=FocusNode();
+  FocusNode adharNoFiled=FocusNode();
+  FocusNode panNoFiled=FocusNode();
+  FocusNode buildingNameFiled=FocusNode();
+  FocusNode flatNoFiled=FocusNode();
+  FocusNode streetNameFiled=FocusNode();
+  FocusNode pinFiled=FocusNode();
+
+  // Function to make the API call
+  Future<void> registerUser() async {
+    final url = Uri.parse('http://localhost:5051/client/clientregister');
+
+    // Prepare your request body data
+    final Map<String, dynamic> requestBody = {
+      'firstName': firstNameController.text,
+      'middleName': middleNameController.text,
+      'lastName':lastNameController.text,
+      'clientPhoneNumber':clientPhoneNumberController.text,
+      'whatsAppNumber':whatsAppNumberController.text,
+      'alternativeNumber':alternativeNumberController.text,
+      'email':emailAddressConttroller.text,
+      'mpin':passwordController.text,
+      'adharCard':adharCardController.text,
+      'panCard':panNumberController.text,
+      'buildingName':buildingNameController.text,
+      'flatNumber':flatNumberController.text,
+      'streetName':streetNameController.text,
+      'pinCode':pinCodeController.text,
+
+       };
+
+    try {
+      final response = await http.post(
+        url,
+        body: jsonEncode(requestBody),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 201) {
+        print('API call successful');
+        // Handle success
+        // Navigate to the next page
+    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginClientPage()));
+      } else {
+        print('API call failed with status code: ${response.statusCode}');
+        // Handle error
+      }
+    } catch (error) {
+      print('Error during API call: $error');
+      // Handle error
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
-      backgroundColor: Colors.white,
+    return Scaffold(
+    backgroundColor: Colors.white,
       body: SafeArea( 
         child: SingleChildScrollView( 
           child: Padding(padding: EdgeInsets.all(12),
@@ -76,6 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [ 
                     Expanded(
                           child: TextFormField(
+                            focusNode: firstNameFiled,
                             keyboardType: TextInputType.name,
                             controller: firstNameController,
                             decoration: InputDecoration(
@@ -92,11 +155,15 @@ class _SignUpPageState extends State<SignUpPage> {
                               }
                               return null;
                             },
+                             onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(middleNameFiled);
+                          },        
                           ),
                         ),
                         SizedBox(width: 5,),
                           Expanded(
                           child: TextFormField(
+                            focusNode: middleNameFiled,
                             keyboardType: TextInputType.name,
                             controller: middleNameController,
                             decoration: InputDecoration(
@@ -113,12 +180,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               }
                               return null;
                             },
+                             onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(lastNameFiled);
+                          },        
                           ),
                         ),
                         SizedBox(width: 5,),
                         Expanded(child: TextFormField( 
+                          focusNode: lastNameFiled,
                           keyboardType: TextInputType.name,
-                          controller: lastNamaController,
+                          controller: lastNameController,
                           decoration: InputDecoration( 
                             labelText: "LastName",
                             labelStyle: TextStyle(color: Colors.black,),
@@ -132,7 +203,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               return "Enter Lastname";
                             }
                             return null;
-                            },                        
+                            }, 
+                             onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(phoneFiled);
+                          },                               
                           ),),
                   ],
                 ),
@@ -142,10 +216,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [ 
                   Expanded(
                     child: TextFormField( 
+                      focusNode: phoneFiled,
                       keyboardType:TextInputType.number,
-                      controller: phoneNumberController,
+                      controller: clientPhoneNumberController,
                       decoration: InputDecoration( 
-                        labelText: "PhoneNumber",
+                        labelText: "clientPhoneNumber",
                         labelStyle: TextStyle(color: Colors.black),
                         hintText: "Enter Number",
                         hintStyle: TextStyle(color: Colors.black),
@@ -158,9 +233,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
+                       onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(whatsappNoFiled);
+                          },        
                     )),
                     SizedBox(width: 5,),
                     Expanded(child: TextFormField( 
+                      focusNode: whatsappNoFiled,
                       keyboardType: TextInputType.number,
                       controller: whatsAppNumberController,
                       decoration: InputDecoration( 
@@ -177,9 +256,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         }
                         return null;
                       },
+                       onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(alternativeNoFiled);
+                          },      
                     )),
                     SizedBox(width: 5,),
                     Expanded(child: TextFormField( 
+                      focusNode: alternativeNoFiled,
                       keyboardType: TextInputType.number,
                       controller: alternativeNumberController,
                       decoration: InputDecoration( 
@@ -195,7 +278,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           return "Enter Alternative Number";
                         }
                         return null;
-                      },
+                      }, onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(emailFiled);
+                          },        
                     )),
                 ],
               ),
@@ -204,6 +289,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [ 
                   Expanded(child: TextFormField( 
+                    focusNode: emailFiled,
                     keyboardType: TextInputType.emailAddress,
                     controller: emailAddressConttroller,
                     decoration: InputDecoration( 
@@ -220,9 +306,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(passwordFiled);
+                          },        
                   )),
                   SizedBox(width: 10,),
                   Expanded(child: TextFormField( 
+                    focusNode: passwordFiled,
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: passToggle,
                     controller: passwordController,
@@ -248,6 +338,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(adharNoFiled);
+                          },        
                   )),
                 ],
               ),
@@ -256,6 +349,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [ 
                   Expanded(child: TextFormField( 
+                    focusNode:adharNoFiled ,
                     keyboardType: TextInputType.number,
                     controller: adharCardController,
                     decoration: InputDecoration( 
@@ -272,9 +366,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(panNoFiled);
+                          },        
                   )),
                   SizedBox(width: 10,),
-                  Expanded(child: TextFormField( 
+                  Expanded(child: TextFormField(
+                    focusNode: panNoFiled, 
                     keyboardType: TextInputType.number,
                     controller: panNumberController,
                     decoration: InputDecoration( 
@@ -291,6 +389,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(buildingNameFiled);
+                          },        
                   )),
                 ],
               ),
@@ -299,6 +400,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [ 
                   Expanded(child: TextFormField( 
+                    focusNode: buildingNameFiled,
                     keyboardType: TextInputType.name,
                     controller: buildingNameController,
                     decoration: InputDecoration( 
@@ -315,9 +417,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(flatNoFiled);
+                          },        
                   )),
                   SizedBox(width: 10,),
-                  Expanded(child: TextFormField( 
+                  Expanded(child: TextFormField(
+                    focusNode: flatNoFiled, 
                     keyboardType: TextInputType.number,
                     controller: flatNumberController,
                     decoration: InputDecoration( 
@@ -334,6 +440,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(streetNameFiled);
+                          },        
                   ))
                 ],
               ),
@@ -342,8 +451,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [ 
                   Expanded(child: TextFormField( 
+                    focusNode: streetNameFiled,
                     keyboardType: TextInputType.name,
-                    controller: streetNameControll,
+                    controller: streetNameController,
                     decoration: InputDecoration( 
                       labelText: "Enter Street name",
                       labelStyle: TextStyle(color: Colors.black),
@@ -358,9 +468,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                       return null;
                     },
+                     onFieldSubmitted: (value) {
+                            FocusScope.of(context).requestFocus(pinFiled);
+                          },        
                   )),
                   SizedBox(width: 10,),
                   Expanded(child: TextFormField( 
+                    focusNode: pinFiled,
                     keyboardType: TextInputType.number,
                     controller: pinCodeController,
                     decoration: InputDecoration( 
@@ -382,54 +496,52 @@ class _SignUpPageState extends State<SignUpPage> {
               )
               ],
               ),
-              SizedBox(height: 20,),
-              Column(
-                children: [
-                  InkWell( 
-                      onTap: (){ 
-                        if(_formfield.currentState!.validate()){
-                          print("Account Created");
-                              firstNameController.clear();
-                              middleNameController.clear();
-                              lastNamaController.clear();
-                              phoneNumberController.clear();
-                              whatsAppNumberController.clear();
-                              alternativeNumberController.clear();
-                              emailAddressConttroller.clear();
-                              passwordController.clear(); 
-                              adharCardController.clear();
-                              panNumberController.clear();
-                              buildingNameController.clear();
-                              flatNumberController.clear();
-                              streetNameControll.clear();
-                              pinCodeController.clear();
-                        }
-                      },
-                      child: Container( 
-                        height: 50,
-                        //width: 200,
-                        decoration: BoxDecoration(
-                          color: Colors.indigo,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center( 
-                          child: GestureDetector(
-                            onTap: (){
-                            // Navigator.push(context, MaterialPageRoute(builder:(context) => LoginPage(),));
-                              print("Account Created");
-                            },
-                            child: Text("Sign Up",
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 20),
+
+      InkWell(
+        onTap: () async {
+          if (_formfield.currentState!.validate()) {
+            // Call the registerUser function to make the API call
+             registerUser();
+
+            // Clear controllers after successful registration
+            firstNameController.clear();
+            middleNameController.clear();
+            lastNameController.clear();
+            clientPhoneNumberController.clear();
+            whatsAppNumberController.clear();
+            alternativeNumberController.clear();
+            emailAddressConttroller.clear();
+            passwordController.clear();
+            panNumberController.clear();
+            adharCardController.clear();
+            buildingNameController.clear();
+            flatNumberController.clear();
+            streetNameController.clear();
+            pinCodeController.clear();
+
+            // ... clear other controllers
+          }
+        },
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.indigo,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Center(
+            child: Text(
+              "Sign Up",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ),
+      // ... existing code
+       SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [ 
@@ -441,7 +553,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextButton(
                           onPressed: (){
                             Navigator.push(context,  
-                            MaterialPageRoute(builder:(context) => LoginPage(),));
+                            MaterialPageRoute(builder:(context) => LoginClientPage(),));
                           }, 
                           child: Text( 
                             "Log In",
@@ -456,11 +568,13 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                 ],
               ),
-              ],
-            )),
+              
+            ),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }
+  

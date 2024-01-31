@@ -1,5 +1,6 @@
-import 'package:crawford2u/Pages/login_page.dart';
-import 'package:crawford2u/Pages/sign_up_page.dart';
+import 'package:crawford2u/Pages/agent/login_page.dart';
+import 'package:crawford2u/Pages/agent/sign_up_page.dart';
+import 'package:crawford2u/common_widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -13,6 +14,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       /*appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100.0),
+        child: AppBarMenu(),
+      ),*/
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100.0),
+        child: AppBarMenu(),
+      ),
       body: SafeArea(
         child: Container(
           width: double.infinity,
@@ -46,14 +55,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   ),)
                 ],
               ),
-              Container(
+              /*Container(
                 height: MediaQuery.of(context).size.height / 3,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("images/assets/welcome.jpg")
                   )
                 ),
-              ),
+              ),*/
 
               Column(
                 children:[

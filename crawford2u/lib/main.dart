@@ -1,5 +1,7 @@
-import 'package:crawford2u/Pages/login_page.dart';
-import 'package:crawford2u/Pages/sign_up_page.dart';
+import 'package:crawford2u/Pages/agent/login_page.dart';
+import 'package:crawford2u/Pages/agent/sign_up_page.dart';
+import 'package:crawford2u/Pages/dashboard/userList.dart';
+import 'package:crawford2u/Pages/welcome_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,8 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignUpPage(),
+      home: WelcomeScreen(),
+      //home: SignUpPage(),
       //home: LoginPage(),
+      //home:AgentListPage(),
     );
   }
 }
