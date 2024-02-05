@@ -12,7 +12,7 @@ exports.generateRegisterSchema={
             type:"string",
             minLength:6,
             maxLength:9,
-            pattern:"^[0-9()-.s]+$",
+            //pattern:"^[0-9()-.s]+$",
            // pattern:"(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%^&+=!])^[0-9()-.s]+$"
       },
       firstName: {
@@ -77,7 +77,7 @@ exports.generateClientRegisterSchema={
             type:"string",
             minLength:6,
             maxLength:9,
-          pattern:"^[0-9()-.s]+$",
+         // pattern:"^[0-9()-.s]+$",
           //  pattern:"(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%^&+=!])^[0-9()-.s]+$"
       },
         firstName: {
@@ -106,7 +106,7 @@ exports.generateClientRegisterSchema={
           type: "string",
           minLength: 10,
           maxLength:10,
-        pattern: "^[A-Z,0-9()-.s]+$",
+        pattern: "^[A-Z,a-z,0-9()-.s]+$",
         errorMessage:"Pancard number "
       },
          buildingName: {
@@ -142,7 +142,7 @@ exports.verifyLoginSchema = {
             type: "string",
             minLength: 6,
             maxLength: 9,
-           pattern: "^[0-9()-.s]+$"
+          // pattern: "^[0-9()-.s]+$"
             //pattern:"(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%^&+=!])^[0-9()-.s]+$"
         }
     },
@@ -162,7 +162,7 @@ exports.clientLoginSchema = {
             type: "string",
             minLength: 6,
             maxLength: 9,
-          pattern: "^[0-9()-.s]+$"
+          //pattern: "^[0-9()-.s]+$"
            // pattern:"(?=.*[A-Z])(?=.*[a-z])(?=.*[@#$%^&+=!])^[0-9()-.s]+$"
         }
     },
@@ -210,7 +210,7 @@ exports.getOneAgentSchemas = {
     },
     
   },
-  required: ["phoneNumber"],
+  //required: ["phoneNumber"],
 };
 
 exports.getOneClientSchemas = {

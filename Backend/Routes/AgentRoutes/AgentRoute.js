@@ -30,7 +30,7 @@ Router.route('/getAllAgentList').get(
         agentController.getAllAgentList
 );
 //Get One Agent Details
-Router.route('/getOneAgentDetails').post(
+Router.route('/getOneAgentDetails/:agentId').get(
     universalFunction.authenticateUser,
     validationFunction.validateUser(agentSchema.getOneAgentSchemas),
     agentController.getOneAgentDetails

@@ -47,7 +47,7 @@ FocusNode firstNameFiled=FocusNode();
 
   // Function to make the API call
   Future<void> registerUser() async {
-    final url = Uri.parse('http://localhost:5051/client/clientregister');
+    final url = Uri.parse('http://localhost:5052/client/clientregister');
 
     // Prepare your request body data
     final Map<String, dynamic> requestBody = {

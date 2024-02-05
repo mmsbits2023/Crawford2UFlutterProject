@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // Function to make the API call for login
   Future<void> loginUser() async {
-    final url = Uri.parse('http://localhost:5051/agent/login');
+    final url = Uri.parse('http://localhost:5052/agent/login');
 
     // Prepare your request body data
     final Map<String, dynamic> requestBody = {

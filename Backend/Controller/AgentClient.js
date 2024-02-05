@@ -23,7 +23,7 @@ exports.registerAgent = (async (request, response, next) => {
             buildingName,
             flatNumber,
             streetName,
-            code
+            //code
         } = request.body;
         console.log(request.body.pinCode)
         const agentData = await AgentDetails.find({ phoneNumber: phoneNumber }).countDocuments();
@@ -67,7 +67,8 @@ exports.registerAgent = (async (request, response, next) => {
             areaCodeLetter +
             agentCodeData+
             firstName.slice(0,1)+
-            middleName.slice(0,1)
+            middleName.slice(0,1)+
+            lastName.slice(0,1)
            //last name not accessing here
             
            
@@ -76,9 +77,7 @@ exports.registerAgent = (async (request, response, next) => {
             middleName.charAt(0) +
             lastName.charAt(0);*/   //it working in postman only
        
-      
-            
-            
+                            
        console.log("agent code is", agentCode);
         const agentDetailsCheck = new AgentDetails();
         agentDetailsCheck.firstName = firstName;
@@ -96,6 +95,7 @@ exports.registerAgent = (async (request, response, next) => {
         agentDetailsCheck.buildingName = buildingName;
         agentDetailsCheck.flatNumber = flatNumber;
         agentDetailsCheck.streetName = streetName;
+        agentDetailsCheck.approved=false;
         console.log("agentDetails", agentDetailsCheck);
        
         const agentdetails = agentDetailsCheck.save(async function (error, saveResult) {
@@ -473,10 +473,10 @@ exports.clientLogout = async (request, response, next) => {
   exports.getOneAgentDetails=async function (request,response,next){
     try{
        //const {phoneNumber}=request.body;
-         const agentId=request.agent.id;   
-      const agentDetails= await AgentDetails.find({agentId:agentId});
+         const agentId=request.params.id;   
+      const agentDetails= await AgentDetails.findOne({agentId:agentId});
            
-        if (agentDetails.length === 0)
+        if (!agentDetails)
        {
         return response.status(404).send({
             status:"FAILURE",

@@ -23,7 +23,7 @@ class _AgentDetailsState extends State<AgentDetails> {
 Future<void> fetchAgentData() async {
   try {
     await retry(
-      () async {final response = await http.get(Uri.parse('http://127.0.0.1:5051/agent/getAllAgentList'));
+      () async {final response = await http.get(Uri.parse('http://127.0.0.1:5052/agent/getAllAgentList'));
 
     if (response.statusCode == 201) {
       final dynamic responseData = json.decode(response.body);

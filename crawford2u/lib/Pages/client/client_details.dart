@@ -93,7 +93,7 @@ Future<void> fetchClientData() async {
   try {
     await retry(
       () async {
-      final response = await http.get(Uri.parse('http://localhost:5051/client/getAllClientList'));
+      final response = await http.get(Uri.parse('http://localhost:5052/client/getAllClientList'));
 
     if (response.statusCode == 201) {
       final dynamic responseData = json.decode(response.body);
